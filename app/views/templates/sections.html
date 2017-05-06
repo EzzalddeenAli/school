@@ -22,18 +22,12 @@
               <table class="table table-hover">
                   <tbody><tr>
                       <th>{{phrase.section}} </th>
-                      <th>{{phrase.sectionTitle}}</th>
-                      <th>{{phrase.teacher}}</th>
+                      <th>{{phrase.class}}</th>
                       <th>{{phrase.Operations}}</th>
                   </tr>
                   <tr ng-repeat="section in value | filter:searchText">
                       <td>{{section.sectionName}}</td>
-                      <td>{{section.sectionTitle}}</td>
-                      <td>
-                          <span ng-repeat="(key_,value_) in section.teacherId">
-                              {{teachers[value_]}} <br/>
-                          </span>
-                      </td>
+                      <td>{{key}}</td>
                       <td>
                         <a ng-click="edit(section.id)" type="button" class="btn btn-info btn-flat" title="{{phrase.Edit}}" tooltip><i class="fa fa-pencil"></i></a>
                         <a ng-click="remove(section,$index)" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a>
@@ -53,6 +47,14 @@
     </div>
     <div class="box-body table-responsive">
       <form class="form-horizontal" name="addDorm" role="form" ng-submit="saveAdd()" novalidate>
+        <div class="form-group" ng-class="{'has-error': addDorm.classId.$invalid}">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}}*</label>
+          <div class="col-sm-10">
+            <select class="form-control" ng-model="form.classId" name="classId" required>
+              <option ng-repeat="(key,value) in classes" value="{{key}}">{{value}}</option>
+            </select>
+          </div>
+        </div>        
         <div class="form-group" ng-class="{'has-error': addDorm.sectionName.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.section}} * </label>
           <div class="col-sm-10">
@@ -65,20 +67,12 @@
             <input type="text" name="sectionTitle" ng-model="form.sectionTitle" class="form-control" required placeholder="{{phrase.sectionTitle}}">
           </div>
         </div> -->
-        <div class="form-group">
+<!--         <div class="form-group">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.sectionTitle}}</label>
           <div class="col-sm-10">
             <input type="text" name="sectionTitle" ng-model="form.sectionTitle" class="form-control" placeholder="{{phrase.sectionTitle}}">
           </div>
-        </div>        
-        <div class="form-group" ng-class="{'has-error': addDorm.classId.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}}*</label>
-          <div class="col-sm-10">
-            <select class="form-control" ng-model="form.classId" name="classId" required>
-              <option ng-repeat="(key,value) in classes" value="{{key}}">{{value}}</option>
-            </select>
-          </div>
-        </div>
+        </div>    -->     
 <!--         <div class="form-group" ng-class="{'has-error': addDorm.teacherId.$invalid}">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.teacher}} *</label>
           <div class="col-sm-10">
@@ -87,14 +81,14 @@
             </select>
           </div>
         </div> -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.teacher}}</label>
           <div class="col-sm-10">
             <select class="form-control" ng-model="form.teacherId" name="teacherId" multiple>
               <option ng-repeat="(key,value) in teachers" value="{{key}}">{{value}}</option>
             </select>
           </div>
-        </div>        
+        </div>        --> 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default" ng-disabled="addDorm.$invalid">{{phrase.addSection}}</button>
@@ -113,6 +107,14 @@
     </div>
     <div class="box-body table-responsive">
       <form class="form-horizontal" name="editDorm" role="form" ng-submit="saveEdit()" novalidate>
+          <div class="form-group" ng-class="{'has-error': editDorm.classId.$invalid}">
+            <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}} *</label>
+            <div class="col-sm-10">
+              <select class="form-control" ng-model="form.classId" name="classId" required>
+                <option ng-repeat="(key,value) in classes" value="{{key}}">{{value}}</option>
+              </select>
+            </div>
+          </div>          
           <div class="form-group" ng-class="{'has-error': editDorm.sectionName.$invalid}">
             <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.section}} * </label>
             <div class="col-sm-10">
@@ -125,20 +127,12 @@
               <input type="text" name="sectionTitle" ng-model="form.sectionTitle" class="form-control" required placeholder="{{phrase.sectionTitle}}">
             </div>
           </div> -->
-          <div class="form-group">
+<!--           <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.sectionTitle}}</label>
             <div class="col-sm-10">
               <input type="text" name="sectionTitle" ng-model="form.sectionTitle" class="form-control" placeholder="{{phrase.sectionTitle}}">
             </div>
-          </div>          
-          <div class="form-group" ng-class="{'has-error': editDorm.classId.$invalid}">
-            <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}} *</label>
-            <div class="col-sm-10">
-              <select class="form-control" ng-model="form.classId" name="classId" required>
-                <option ng-repeat="(key,value) in classes" value="{{key}}">{{value}}</option>
-              </select>
-            </div>
-          </div>
+          </div>    -->       
 <!--           <div class="form-group" ng-class="{'has-error': editDorm.teacherId.$invalid}">
             <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.teacher}}</label>
             <div class="col-sm-10">
@@ -147,14 +141,14 @@
               </select>
             </div>
           </div> -->
-          <div class="form-group">
+<!--           <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.teacher}}</label>
             <div class="col-sm-10">
               <select class="form-control" ng-model="form.teacherId" name="teacherId" multiple>
                 <option ng-repeat="(key,value) in teachers" value="{{key}}">{{value}}</option>
               </select>
             </div>
-          </div>          
+          </div>   -->        
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default" ng-disabled="editDorm.$invalid">{{phrase.editSection}}</button>
