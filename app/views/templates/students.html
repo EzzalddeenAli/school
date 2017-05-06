@@ -331,14 +331,22 @@
             </select>
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.studentSection.$invalid}" ng-show="$root.dashboardData.enableSections == '1'">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.studentSection.$invalid}" ng-show="$root.dashboardData.enableSections == '1'">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.section}} *</label>
           <div class="col-sm-10">
             <select class="form-control" ng-model="form.studentSection" ng-required="$root.dashboardData.enableSections == '1'" name="studentSection">
                 <option ng-repeat="section in sections" value="{{section.id}}">{{section.sectionName}} - {{section.sectionTitle}}</option>
             </select>
           </div>
-        </div>
+        </div> -->
+        <div class="form-group" ng-show="$root.dashboardData.enableSections == '1'">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.section}}</label>
+          <div class="col-sm-10">
+            <select class="form-control" ng-model="form.studentSection" name="studentSection">
+                <option ng-repeat="section in sections" value="{{section.id}}">{{section.sectionName}} - {{section.sectionTitle}}</option>
+            </select>
+          </div>
+        </div>        
         <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Transportation}}</label>
           <div class="col-sm-10">
@@ -479,11 +487,16 @@
                         <option ng-repeat="class in value.classSections.classes" value="{{class.id}}" ng-selected="class.id == value.default">{{class.className}}</option>
                       </select>
                   </td>
-                  <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
+<!--                   <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
                       <select class="form-control" name="userSection[{{value.id}}]" required>
                         <option ng-repeat="section in value.classSections.sections[selectedClass]" value="{{section.id}}" ng-selected="section.id == value.defSection"> {{section.sectionName}} - {{section.sectionTitle}}</option>
                       </select>
-                  </td>
+                  </td> -->
+                  <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
+                      <select class="form-control" name="userSection[{{value.id}}]">
+                        <option ng-repeat="section in value.classSections.sections[selectedClass]" value="{{section.id}}" ng-selected="section.id == value.defSection"> {{section.sectionName}} - {{section.sectionTitle}}</option>
+                      </select>
+                  </td>                  
                   <td ng-show="value.id != '0'">
                       <a ng-show="value.default == form.studentClass" ng-disabled="true" ng-click="alert('You cannot delete current default academic year')" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a>
                       <a ng-show="value.default != form.studentClass" ng-click="removeStAcYear(form.id,value.id,$index)" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a>

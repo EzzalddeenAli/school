@@ -691,9 +691,9 @@ class StudentsController extends \BaseController {
 
 	function edit($id){
 		if($this->data['users']->role != "admin") exit;
-		if(User::where('username',trim(Input::get('username')))->where('id','!=',$id)->count() > 0){
-			return $this->panelInit->apiOutput(false,$this->panelInit->language['editStudent'],$this->panelInit->language['usernameUsed']);
-		}
+		// if(User::where('username',trim(Input::get('username')))->where('id','!=',$id)->count() > 0){
+		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['editStudent'],$this->panelInit->language['usernameUsed']);
+		// }
 		if(isset($this->panelInit->settingsArray['emailIsMandatory']) AND $this->panelInit->settingsArray['emailIsMandatory'] == 1){
 			if(User::where('email',Input::get('email'))->where('id','!=',$id)->count() > 0){
 				return $this->panelInit->apiOutput(false,$this->panelInit->language['addStudent'],$this->panelInit->language['mailUsed']);
