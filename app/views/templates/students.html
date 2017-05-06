@@ -241,7 +241,7 @@
         <div class="form-group" ng-class="{'has-error': addAdmin.fullName.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.FullName}} * </label>
           <div class="col-sm-10">
-            <input type="text" name="fullName" ng-model="form.fullName" class="form-control" required placeholder="{{phrase.FullName}}">
+            <input type="text" name="fullName" ng-model="form.fullName" class="form-control" required autofocus placeholder="{{phrase.FullName}}">
           </div>
         </div>
         <div class="form-group">
@@ -250,24 +250,36 @@
             <input type="text" name="studentRollId" ng-model="form.studentRollId" class="form-control" placeholder="{{phrase.rollid}}">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} * </label>
           <div class="col-sm-10">
             <input type="text" name="username" ng-model="form.username" class="form-control" required placeholder="{{phrase.username}}">
           </div>
-        </div>
+        </div> -->
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}}</label>
+          <div class="col-sm-10">
+            <input type="text" name="username" ng-model="form.username" class="form-control" placeholder="{{phrase.username}}">
+          </div>
+        </div>        
         <div class="form-group" ng-class="{'has-error': addAdmin.email.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}} *</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}}</label>
           <div class="col-sm-10">
             <input type="email" name="email" ng-model="form.email" class="form-control" placeholder="{{phrase.email}}" ng-required="$root.dashboardData.emailIsMandatory == '1'">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.password.$invalid}">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.password.$invalid}">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}} *</label>
           <div class="col-sm-10">
             <input type="password" name="password" ng-model="form.password" class="form-control" required placeholder="{{phrase.password}}">
           </div>
-        </div>
+        </div> -->
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}}</label>
+          <div class="col-sm-10">
+            <input type="password" name="password" ng-model="form.password" class="form-control" placeholder="{{phrase.password}}" value="default">
+          </div>
+        </div>        
         <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Gender}}</label>
           <div class="col-sm-10">
@@ -306,13 +318,13 @@
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': addAdmin.mobileNo.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}} *</label>
           <div class="col-sm-10">
-            <input type="text" mobile-number name="mobileNo" class="form-control mobilenumber" ng-model="form.mobileNo" >
+            <input type="text" mobile-number name="mobileNo" class="form-control mobilenumber" required ng-model="form.mobileNo" >  Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': addAdmin.studentClass.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}} *</label>
           <div class="col-sm-10">
             <select class="form-control" name="studentClass" ng-model="form.studentClass" required ng-change="subjectList()">
               <option ng-repeat="class in classes" value="{{class.id}}">{{class.className}}</option>
@@ -380,20 +392,26 @@
             <input type="text" name="studentRollId" ng-model="form.studentRollId" class="form-control" placeholder="{{phrase.rollid}}">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} * </label>
           <div class="col-sm-10">
             <input type="text" name="username" ng-model="form.username" class="form-control" required placeholder="{{phrase.username}}">
           </div>
-        </div>
+        </div> -->
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} </label>
+          <div class="col-sm-10">
+            <input type="text" name="username" ng-model="form.username" class="form-control" placeholder="{{phrase.username}}">
+          </div>
+        </div>        
         <div class="form-group" ng-class="{'has-error': addAdmin.email.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}} *</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}}</label>
           <div class="col-sm-10">
             <input type="email" name="email" ng-model="form.email" class="form-control" placeholder="{{phrase.email}}" ng-required="$root.dashboardData.emailIsMandatory == '1'">
           </div>
         </div>
         <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}} *</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}}</label>
           <div class="col-sm-10">
             <input type="password" name="password" ng-model="form.password" class="form-control" placeholder="{{phrase.password}}">
           </div>
@@ -436,13 +454,13 @@
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': editDorm.mobileNo.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}} *</label>
           <div class="col-sm-10">
-            <input mobile-number type="text" name="mobileNo" class="form-control mobilenumber" ng-model="form.mobileNo" value="{{form.mobileNo}}">
+            <input mobile-number type="text" name="mobileNo" class="form-control mobilenumber" required ng-model="form.mobileNo" value="{{form.mobileNo}}">  Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': addAdmin['academicYear[]'].$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}} *</label>
           <div class="col-sm-10">
               <table class="table table-bordered">
                 <tr>
