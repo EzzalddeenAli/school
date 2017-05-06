@@ -22,11 +22,13 @@
               <table class="table table-hover">
                   <tbody><tr>
                       <th>{{phrase.section}} </th>
+                      <th>{{phrase.sectionTitle}} </th>                      
                       <th>{{phrase.class}}</th>
                       <th>{{phrase.Operations}}</th>
                   </tr>
                   <tr ng-repeat="section in value | filter:searchText">
                       <td>{{section.sectionName}}</td>
+                      <td>{{section.sectionTitle}}</td>                      
                       <td>{{key}}</td>
                       <td>
                         <a ng-click="edit(section.id)" type="button" class="btn btn-info btn-flat" title="{{phrase.Edit}}" tooltip><i class="fa fa-pencil"></i></a>
@@ -61,12 +63,12 @@
             <input type="text" name="sectionName" ng-model="form.sectionName" class="form-control" required placeholder="{{phrase.section}}">
           </div>
         </div>
-<!--         <div class="form-group" ng-class="{'has-error': addDorm.sectionTitle.$invalid}">
+        <div class="form-group" ng-class="{'has-error': addDorm.sectionTitle.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.sectionTitle}} * </label>
           <div class="col-sm-10">
             <input type="text" name="sectionTitle" ng-model="form.sectionTitle" class="form-control" required placeholder="{{phrase.sectionTitle}}">
           </div>
-        </div> -->
+        </div>
 <!--         <div class="form-group">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.sectionTitle}}</label>
           <div class="col-sm-10">
@@ -121,12 +123,12 @@
               <input type="text" name="sectionName" ng-model="form.sectionName" class="form-control" required placeholder="{{phrase.section}}">
             </div>
           </div>
-<!--           <div class="form-group" ng-class="{'has-error': editDorm.sectionTitle.$invalid}">
-            <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.sectionTitle}}</label>
+          <div class="form-group" ng-class="{'has-error': editDorm.sectionTitle.$invalid}">
+            <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.sectionTitle}} *</label>
             <div class="col-sm-10">
               <input type="text" name="sectionTitle" ng-model="form.sectionTitle" class="form-control" required placeholder="{{phrase.sectionTitle}}">
             </div>
-          </div> -->
+          </div>
 <!--           <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.sectionTitle}}</label>
             <div class="col-sm-10">
