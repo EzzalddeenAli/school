@@ -1177,7 +1177,77 @@ class StudentsController extends \BaseController {
 		}
 		return $toReturn;
 	}
+// Test	
+	function certificates($id){
+		if($this->data['users']->role != "admin") exit;
+		// if(User::where('username',trim(Input::get('username')))->where('id','!=',$id)->count() > 0){
+		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['editStudent'],$this->panelInit->language['usernameUsed']);
+		// }
+		if(isset($this->panelInit->settingsArray['emailIsMandatory']) AND $this->panelInit->settingsArray['emailIsMandatory'] == 1){
+			if(User::where('email',Input::get('email'))->where('id','!=',$id)->count() > 0){
+				return $this->panelInit->apiOutput(false,$this->panelInit->language['addStudent'],$this->panelInit->language['mailUsed']);
+			}
+		}
+		$User = User::find($id);
+		$User->email = Input::get('email');
+		$User->username = Input::get('username');
+		$User->fullName = Input::get('fullName');
+		if(Input::get('password') != ""){
+			$User->password = Hash::make(Input::get('password'));
+		}
+		$User->studentRollId = Input::get('studentRollId');
+		$User->gender = Input::get('gender');
+		$User->address = Input::get('address');
+		$User->phoneNo = Input::get('phoneNo');
+		$User->mobileNo = Input::get('mobileNo');
+		$User->transport = Input::get('transport');
+		if(input::has('hostel')){
+			$User->hostel = Input::get('hostel');
+		}
+		if(Input::get('birthday') != ""){
+			$User->birthday = $this->panelInit->dateToUnix(Input::get('birthday'));
+		}
 
+		if (Input::hasFile('photo')) {
+			$fileInstance = Input::file('photo');
+			$newFileName = "profile_".$User->id.".jpg";
+			$file = $fileInstance->move('uploads/profile/',$newFileName);
+
+			$User->photo = "profile_".$User->id.".jpg";
+		}
+		$User->save();
+
+		if(input::has('academicYear')){
+			$studentAcademicYears = input::get('academicYear');
+			if(input::has('userSection')){
+				$studentSection = input::get('userSection');
+			}
+			$academicYear = student_academic_years::where('studentId',$id)->get();
+			foreach ($academicYear as $value) {
+				if(isset($studentAcademicYears[$value->academicYearId])){
+					$studentAcademicYearsUpdate = student_academic_years::where('studentId',$User->id)->where('academicYearId',$value->academicYearId)->first();
+					$studentAcademicYearsUpdate->classId = $studentAcademicYears[$value->academicYearId];
+					if($this->panelInit->settingsArray['enableSections'] == true){
+						$studentAcademicYearsUpdate->sectionId = $studentSection[$value->academicYearId];
+					}
+					$studentAcademicYearsUpdate->save();
+
+					attendance::where('classId',$value->classId)->where('studentId',$User->id)->update(array('classId' => $studentAcademicYears[$value->academicYearId]));
+					exam_marks::where('classId',$value->classId)->where('studentId',$User->id)->update(array('classId' => $studentAcademicYears[$value->academicYearId]));
+				}
+				if($value->academicYearId == $User->studentAcademicYear){
+					$User->studentClass = $studentAcademicYears[$value->academicYearId];
+					if($this->panelInit->settingsArray['enableSections'] == true){
+						$User->studentSection = $studentSection[$value->academicYearId];
+					}
+					$User->save();
+				}
+			}
+		}
+
+		return $this->panelInit->apiOutput(true,$this->panelInit->language['editStudent'],$this->panelInit->language['studentModified'],$User->toArray());
+	}
+//Test	
 	function profile($id){
 		$data = User::where('role','student')->where('id',$id);
 
