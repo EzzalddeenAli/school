@@ -1247,6 +1247,95 @@ class StudentsController extends \BaseController {
 
 		return $this->panelInit->apiOutput(true,$this->panelInit->language['editStudent'],$this->panelInit->language['studentModified'],$User->toArray());
 	}
+
+function certificatePDF($User){
+		if(\Auth::user()->role == "student"){
+			$User = \Auth::user()->id;
+		}
+		$student = User::where('id',$User)->first();
+		
+		
+		$doc_details = array(
+							"title" => $student->fullName ." Marksheet",
+							"author" => $this->data['panelInit']->settingsArray['siteTitle'],
+							"topMarginValue" => 10
+							);
+
+		$pdfbuilder = new PdfBuilder($doc_details);
+
+	//	$pdfbuilder->space(10);
+
+		$content = "
+		<table cellspacing=\"0\" cellpadding=\"4\" border=\"0\">
+			<tr>
+				<td width=\"100px\"><img src=\"".URL::asset('assets/img/logo.png')."\"></td>
+				<td style=\"vertical-align: middle\" ><br/><br/><br/>".$this->data['panelInit']->settingsArray['siteTitle']."<br/>".$student->fullName ." Certificate"."</td>
+			</tr>
+		</table>
+
+		<br/><br/>
+
+		<table cellspacing=\"5\" cellpadding=\"4\" border=\"0\">
+		        <tr>
+		            <td style='width: 50%;text-align: left;'>
+
+						<table cellspacing=\"5\" cellpadding=\"4\" border=\"0\">
+					        <tr>
+					            <td style=\"width:30%; \">School</td>
+					            <td style=\"width:70%; \">".$this->data['panelInit']->settingsArray['siteTitle']."</td>
+					        </tr>
+					        <tr>
+					            <td style=\"width:30%; \">".$this->panelInit->language['Marksheet']." :</td>
+					            <td style=\"width:70%\">".$this->data['panelInit']->settingsArray['address']."<br>".$this->data['panelInit']->settingsArray['address2']."
+					            </td>
+					        </tr>
+					        <tr>
+					            <td style=\"width:30%;\">".$this->panelInit->language['email']." :</td>
+					            <td style=\"width:70%\">".$this->data['panelInit']->settingsArray['systemEmail']."</td>
+					        </tr>
+					        <tr>
+					            <td style=\"width:30%;\">".$this->panelInit->language['phoneNo']." :</td>
+					            <td style=\"width:70%\">".$this->data['panelInit']->settingsArray['phoneNo']."</td>
+					        </tr>
+					    </table>
+
+		            </td>
+		            <td style='width: 50%; color: #444444;text-align: left;'>
+
+
+						<table cellspacing=\"5\" cellpadding=\"4\" border=\"0\">
+							<tr>
+								<td style=\"width:30%;\">".$this->panelInit->language['student']." :</td>
+								<td style=\"width:70%\">".$student->fullName."</td>
+							</tr>
+							<tr>
+								<td style=\"width:30%;\">".$this->panelInit->language['Address']." :</td>
+								<td style=\"width:70%\">".$student->address."</td>
+							</tr>
+							<tr>
+								<td style=\"width:30%;\">".$this->panelInit->language['email']." :</td>
+								<td style=\"width:70%\">".$student->email."</td>
+							</tr>
+							<tr>
+								<td style=\"width:30%;\">".$this->panelInit->language['phoneNo']." :</td>
+								<td style=\"width:70%\">".$student->phoneNo." - ".$student->mobileNo."</td>
+							</tr>
+						</table>
+
+
+					</td>
+		        </tr>
+		    </table>
+
+			<br/><br/><br/>";
+
+
+
+		$pdfbuilder->table($content, array('border' => '0','align'=>'') );
+		$pdfbuilder->output('Certificate - '.$student->fullName.'.pdf');
+
+		exit;
+	}	
 //Test	
 	function profile($id){
 		$data = User::where('role','student')->where('id',$id);

@@ -128,6 +128,7 @@ Route::group(array('prefix'=>'/','before'=>'auth.Ui|auth.token|api.csrf'),functi
 	Route::get('/students/gradStdList','StudentsController@gradStdList');
 	Route::post('/students/approveOne/{id}','StudentsController@approveOne');
     Route::get('/students/print/marksheet/{student}/{exam}','StudentsController@marksheetPDF');
+    Route::get('/students/print/certicate/{student}','StudentsController@certificatePDF');    
     Route::get('/students/marksheet/{id}','StudentsController@marksheet');
     //Test
     Route::get('/students/certificates/{id}','StudentsController@certificates'); 
