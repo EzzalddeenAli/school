@@ -1,3 +1,4 @@
+.DS_Store
 app/config/database.php
-app/storage/views/
-uploads/
+app/storage/views/*
+uploads/**/*
