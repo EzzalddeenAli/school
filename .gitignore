@@ -2,3 +2,4 @@
 app/config/database.php
 app/storage/views/*
 uploads/**/*
+app/config/database.php
