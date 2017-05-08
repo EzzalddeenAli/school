@@ -926,7 +926,16 @@ schoex.controller('studentsController', function(dataFactory,CSRF_TOKEN,$rootSco
       showHideLoad(true);
     });
   }
-
+  //Test
+  $scope.certificates = function(id){
+    showHideLoad();
+    dataFactory.httpRequest('students/'+id).then(function(data) {
+      $scope.form = data;
+      $scope.changeView('certificates');
+      showHideLoad(true);
+    });
+  }  
+  //Test
   $scope.medicalRead = function(id){
       showHideLoad();
       dataFactory.httpRequest('students/medical/'+id).then(function(data) {
@@ -960,6 +969,7 @@ schoex.controller('studentsController', function(dataFactory,CSRF_TOKEN,$rootSco
     $scope.views.edit = false;
     $scope.views.attendance = false;
     $scope.views.marksheet = false;
+    $scope.views.test = false;    
     $scope.views.import = false;
     $scope.views.reviewImport = false;
     $scope.views.medical = false;

@@ -72,7 +72,7 @@ class sectionsController extends \BaseController {
 		$sections->sectionName = Input::get('sectionName');
 		$sections->sectionTitle = Input::get('sectionTitle');
 		$sections->classId = Input::get('classId');
-		$sections->teacherId = json_encode(Input::get('teacherId'));
+		// $sections->teacherId = json_encode(Input::get('teacherId'));
 		$sections->save();
 
 		return $this->panelInit->apiOutput(true,$this->panelInit->language['addSection'],$this->panelInit->language['sectionAdded']);
@@ -89,7 +89,7 @@ class sectionsController extends \BaseController {
 		$sections->sectionName = Input::get('sectionName');
 		$sections->sectionTitle = Input::get('sectionTitle');
 		$sections->classId = Input::get('classId');
-		$sections->teacherId = json_encode(Input::get('teacherId'));
+		// $sections->teacherId = json_encode(Input::get('teacherId'));
 		$sections->save();
 
 		return $this->panelInit->apiOutput(true,$this->panelInit->language['editSection'],$this->panelInit->language['sectionUpdated']);
