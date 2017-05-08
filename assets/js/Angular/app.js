@@ -926,16 +926,6 @@ schoex.controller('studentsController', function(dataFactory,CSRF_TOKEN,$rootSco
       showHideLoad(true);
     });
   }
-  //Test
-  $scope.certificates = function(id){
-    showHideLoad();
-    dataFactory.httpRequest('students/'+id).then(function(data) {
-      $scope.form = data;
-      $scope.changeView('certificates');
-      showHideLoad(true);
-    });
-  }  
-  //Test
   $scope.medicalRead = function(id){
       showHideLoad();
       dataFactory.httpRequest('students/medical/'+id).then(function(data) {
