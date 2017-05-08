@@ -71,7 +71,8 @@
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"> {{phrase.Operations}} <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
                           <li><a ng-click="attendance(student.id)"><i class="fa fa-eye"></i> {{phrase.Attendance}}</a></li>
-                          <li><a ng-click="marksheet(student.id)"><i class="fa fa-table"></i> {{phrase.Marksheet}}</a></li>
+                          <li><a ng-click="marksheet(student.id)"><i class="fa fa-table"></i> {{phrase.Marksheet}}</a></li>      
+                          <li><a ng-click="certificates(student.id)"><i class="fa fa-table"></i>Certificates</a></li>                                           
                           <li ng-if="userRole == 'admin' && student.isLeaderBoard == ''"><a ng-click="leaderBoard(student.id,$index)"><i class="fa fa-trophy"></i> {{phrase.leaderboard}}</a></li>
                           <li ng-if="userRole == 'admin'"><a ng-click="medicalRead(student.id)"><i class="fa fa-stethoscope"></i> {{phrase.medHistory}}</a></li>
                           <li ng-if="userRole == 'admin'"><a ng-click="edit(student.id)"><i class="fa fa-pencil"></i> {{phrase.Edit}}</a></li>
@@ -83,9 +84,176 @@
               <tr ng-show="!students.length"><td class="noTableData" colspan="6">{{phrase.noStudents}}</td></tr>
           </tbody></table>
           <dir-pagination-controls class="pull-right" on-page-change="pageChanged(newPageNumber)" template-url="templates/dirPagination.html" ></dir-pagination-controls>
+          <div style="height: 200px"></div>
       </div>
   </div>
 </section>
+
+<!-- Test -->
+<section class="content" ng-show="views.certificates">
+
+
+  <a ng-click="changeView('list')" class="floatRTL btn btn-danger btn-flat pull-right marginBottom15">{{phrase.cancelEdit}}</a>
+  <div class="box col-xs-12">
+    <div class="box-header">
+        <h3 class="box-title">Certificates</h3>
+    <div class="box-body table-responsive">
+      <form class="form-horizontal" name="editDorm" role="form" ng-upload="saveEdit(content)" method="post" action="{{'students/'+form.id}}" novalidate>
+        <div class="form-group" ng-class="{'has-error': addAdmin.fullName.$invalid}">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.FullName}} * </label>
+          <div class="col-sm-10">
+            <input type="text" name="fullName" ng-model="form.fullName" class="form-control" required placeholder="{{phrase.FullName}}" ng-disabled="medViewMode">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.rollid}} </label>
+          <div class="col-sm-10">
+            <input type="text" name="studentRollId" ng-model="form.studentRollId" class="form-control" placeholder="{{phrase.rollid}}">
+          </div>
+        </div>
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} * </label>
+          <div class="col-sm-10">
+            <input type="text" name="username" ng-model="form.username" class="form-control" required placeholder="{{phrase.username}}">
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} </label>
+          <div class="col-sm-10">
+            <input type="text" name="username" ng-model="form.username" class="form-control" placeholder="{{phrase.username}}">
+          </div>
+        </div>        
+        <div class="form-group" ng-class="{'has-error': addAdmin.email.$invalid}">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}}</label>
+          <div class="col-sm-10">
+            <input type="email" name="email" ng-model="form.email" class="form-control" placeholder="{{phrase.email}}" ng-required="$root.dashboardData.emailIsMandatory == '1'">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}}</label>
+          <div class="col-sm-10">
+            <input type="password" name="password" ng-model="form.password" class="form-control" placeholder="{{phrase.password}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Gender}}</label>
+          <div class="col-sm-10">
+
+            <div class="radio">
+                <label>
+                    <input type="radio" name="gender" value="male" ng-model="form.gender" checked="checked">
+                    {{phrase.Male}}
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="gender" value="female" ng-model="form.gender">
+                    {{phrase.Female}}
+                </label>
+            </div>
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Birthday}}</label>
+          <div class="col-sm-10">
+            <input type="text" date-picker id="datemask" name="birthday" ng-model="form.birthday" class="form-control datemask">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Address}}</label>
+          <div class="col-sm-10">
+            <input type="text" name="address" class="form-control" ng-model="form.address" placeholder="{{phrase.Address}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.phoneNo}}</label>
+          <div class="col-sm-10">
+            <input type="text" name="phoneNo" class="form-control" ng-model="form.phoneNo" placeholder="{{phrase.phoneNo}}">
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': editDorm.mobileNo.$invalid}">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}} *</label>
+          <div class="col-sm-10">
+            <input mobile-number type="text" name="mobileNo" class="form-control mobilenumber" required ng-model="form.mobileNo" value="{{form.mobileNo}}">  Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': addAdmin['academicYear[]'].$invalid}">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}} *</label>
+          <div class="col-sm-10">
+              <table class="table table-bordered">
+                <tr>
+                  <th>{{phrase.academicyears}}</th>
+                  <th>{{phrase.class}}</th>
+                  <th ng-show="$root.dashboardData.enableSections == '1'">{{phrase.section}}</th>
+                  <th>{{phrase.Remove}}</th>
+                </tr>
+                <tr ng-repeat="(key,value) in form.studentAcademicYears">
+                  <td>
+                           {{form.academicYear[value.id]}}
+                          <span ng-show="value.default == form.studentClass">*</span>
+                  </td>
+                  <td ng-show="value.id != '0'">
+                      <select class="form-control" name="academicYear[{{value.id}}]" ng-model="selectedClass" ng-init="selectedClass = value.default" required>
+                        <option ng-repeat="class in value.classSections.classes" value="{{class.id}}" ng-selected="class.id == value.default">{{class.className}}</option>
+                      </select>
+                  </td>
+<!--                   <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
+                      <select class="form-control" name="userSection[{{value.id}}]" required>
+                        <option ng-repeat="section in value.classSections.sections[selectedClass]" value="{{section.id}}" ng-selected="section.id == value.defSection"> {{section.sectionName}} - {{section.sectionTitle}}</option>
+                      </select>
+                  </td> -->
+                  <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
+                      <select class="form-control" name="userSection[{{value.id}}]">
+                        <option ng-repeat="section in value.classSections.sections[selectedClass]" value="{{section.id}}" ng-selected="section.id == value.defSection"> {{section.sectionName}} - {{section.sectionTitle}}</option>
+                      </select>
+                  </td>                  
+                  <td ng-show="value.id != '0'">
+                      <a ng-show="value.default == form.studentClass" ng-disabled="true" ng-click="alert('You cannot delete current default academic year')" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a>
+                      <a ng-show="value.default != form.studentClass" ng-click="removeStAcYear(form.id,value.id,$index)" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+                <tr ng-show="form.studentClass == '-1'">
+                  <td colspan="4">
+                      Graduated
+                  </td>
+                </tr>
+              </table>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Transportation}}</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="transport" ng-model="form.transport" >
+              <option ng-repeat="transport in transports" value="{{transport.id}}">{{transport.transportTitle}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">Hostel</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="hostel" ng-model="form.hostel" >
+              <option ng-repeat="(key,value) in hostel" value="{{key}}">{{value}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Photo}}</label>
+          <div class="col-sm-10">
+            <input type="file" name="photo">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <input type="hidden" name="_token" value="{{CSRF_TOKEN}}">
+          </div>
+        </div>
+      </form>
+    </div>
+              <a href="students/print/certificate/{{form.id}}" target="_BLANK" class="btn btn-info btn-flat pull-left marginBottom15">{{phrase.Print}}</a>
+  </div>
+</section>
+<!-- Test -->
 
 <section class="content" ng-show="views.marksheet">
   <h3> {{phrase.Marksheet}}</h3>
@@ -241,7 +409,7 @@
         <div class="form-group" ng-class="{'has-error': addAdmin.fullName.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.FullName}} * </label>
           <div class="col-sm-10">
-            <input type="text" name="fullName" ng-model="form.fullName" class="form-control" required placeholder="{{phrase.FullName}}">
+            <input type="text" name="fullName" ng-model="form.fullName" class="form-control" required autofocus placeholder="{{phrase.FullName}}">
           </div>
         </div>
         <div class="form-group">
@@ -250,24 +418,36 @@
             <input type="text" name="studentRollId" ng-model="form.studentRollId" class="form-control" placeholder="{{phrase.rollid}}">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} * </label>
           <div class="col-sm-10">
             <input type="text" name="username" ng-model="form.username" class="form-control" required placeholder="{{phrase.username}}">
           </div>
-        </div>
+        </div> -->
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}}</label>
+          <div class="col-sm-10">
+            <input type="text" name="username" ng-model="form.username" class="form-control" placeholder="{{phrase.username}}">
+          </div>
+        </div>        
         <div class="form-group" ng-class="{'has-error': addAdmin.email.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}} *</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}}</label>
           <div class="col-sm-10">
             <input type="email" name="email" ng-model="form.email" class="form-control" placeholder="{{phrase.email}}" ng-required="$root.dashboardData.emailIsMandatory == '1'">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.password.$invalid}">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.password.$invalid}">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}} *</label>
           <div class="col-sm-10">
             <input type="password" name="password" ng-model="form.password" class="form-control" required placeholder="{{phrase.password}}">
           </div>
-        </div>
+        </div> -->
+        <div class="form-group">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}}</label>
+          <div class="col-sm-10">
+            <input type="password" name="password" ng-model="form.password" class="form-control" placeholder="{{phrase.password}}" value="default">
+          </div>
+        </div>        
         <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Gender}}</label>
           <div class="col-sm-10">
@@ -306,27 +486,35 @@
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': addAdmin.mobileNo.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}} *</label>
           <div class="col-sm-10">
-            <input type="text" mobile-number name="mobileNo" class="form-control mobilenumber" ng-model="form.mobileNo" >
+            <input type="text" mobile-number name="mobileNo" class="form-control mobilenumber" required ng-model="form.mobileNo" >  Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': addAdmin.studentClass.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}} *</label>
           <div class="col-sm-10">
             <select class="form-control" name="studentClass" ng-model="form.studentClass" required ng-change="subjectList()">
               <option ng-repeat="class in classes" value="{{class.id}}">{{class.className}}</option>
             </select>
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.studentSection.$invalid}" ng-show="$root.dashboardData.enableSections == '1'">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.studentSection.$invalid}" ng-show="$root.dashboardData.enableSections == '1'">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.section}} *</label>
           <div class="col-sm-10">
             <select class="form-control" ng-model="form.studentSection" ng-required="$root.dashboardData.enableSections == '1'" name="studentSection">
                 <option ng-repeat="section in sections" value="{{section.id}}">{{section.sectionName}} - {{section.sectionTitle}}</option>
             </select>
           </div>
-        </div>
+        </div> -->
+        <div class="form-group" ng-show="$root.dashboardData.enableSections == '1'">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.section}}</label>
+          <div class="col-sm-10">
+            <select class="form-control" ng-model="form.studentSection" name="studentSection">
+                <option ng-repeat="section in sections" value="{{section.id}}">{{section.sectionName}} - {{section.sectionTitle}}</option>
+            </select>
+          </div>
+        </div>        
         <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Transportation}}</label>
           <div class="col-sm-10">
@@ -380,20 +568,26 @@
             <input type="text" name="studentRollId" ng-model="form.studentRollId" class="form-control" placeholder="{{phrase.rollid}}">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
+<!--         <div class="form-group" ng-class="{'has-error': addAdmin.username.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} * </label>
           <div class="col-sm-10">
             <input type="text" name="username" ng-model="form.username" class="form-control" required placeholder="{{phrase.username}}">
           </div>
-        </div>
+        </div> -->
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} </label>
+          <div class="col-sm-10">
+            <input type="text" name="username" ng-model="form.username" class="form-control" placeholder="{{phrase.username}}">
+          </div>
+        </div>        
         <div class="form-group" ng-class="{'has-error': addAdmin.email.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}} *</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.email}}</label>
           <div class="col-sm-10">
             <input type="email" name="email" ng-model="form.email" class="form-control" placeholder="{{phrase.email}}" ng-required="$root.dashboardData.emailIsMandatory == '1'">
           </div>
         </div>
         <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}} *</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.password}}</label>
           <div class="col-sm-10">
             <input type="password" name="password" ng-model="form.password" class="form-control" placeholder="{{phrase.password}}">
           </div>
@@ -436,13 +630,13 @@
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': editDorm.mobileNo.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}} *</label>
           <div class="col-sm-10">
-            <input mobile-number type="text" name="mobileNo" class="form-control mobilenumber" ng-model="form.mobileNo" value="{{form.mobileNo}}">
+            <input mobile-number type="text" name="mobileNo" class="form-control mobilenumber" required ng-model="form.mobileNo" value="{{form.mobileNo}}">  Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': addAdmin['academicYear[]'].$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}}</label>
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.class}} *</label>
           <div class="col-sm-10">
               <table class="table table-bordered">
                 <tr>
@@ -461,11 +655,16 @@
                         <option ng-repeat="class in value.classSections.classes" value="{{class.id}}" ng-selected="class.id == value.default">{{class.className}}</option>
                       </select>
                   </td>
-                  <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
+<!--                   <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
                       <select class="form-control" name="userSection[{{value.id}}]" required>
                         <option ng-repeat="section in value.classSections.sections[selectedClass]" value="{{section.id}}" ng-selected="section.id == value.defSection"> {{section.sectionName}} - {{section.sectionTitle}}</option>
                       </select>
-                  </td>
+                  </td> -->
+                  <td ng-show="$root.dashboardData.enableSections == '1' && value.id != '0'">
+                      <select class="form-control" name="userSection[{{value.id}}]">
+                        <option ng-repeat="section in value.classSections.sections[selectedClass]" value="{{section.id}}" ng-selected="section.id == value.defSection"> {{section.sectionName}} - {{section.sectionTitle}}</option>
+                      </select>
+                  </td>                  
                   <td ng-show="value.id != '0'">
                       <a ng-show="value.default == form.studentClass" ng-disabled="true" ng-click="alert('You cannot delete current default academic year')" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a>
                       <a ng-show="value.default != form.studentClass" ng-click="removeStAcYear(form.id,value.id,$index)" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a>
