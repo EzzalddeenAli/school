@@ -128,7 +128,11 @@ Route::group(array('prefix'=>'/','before'=>'auth.Ui|auth.token|api.csrf'),functi
 	Route::get('/students/gradStdList','StudentsController@gradStdList');
 	Route::post('/students/approveOne/{id}','StudentsController@approveOne');
     Route::get('/students/print/marksheet/{student}/{exam}','StudentsController@marksheetPDF');
+    Route::get('/students/print/certicate/{student}','StudentsController@certificatePDF');    
     Route::get('/students/marksheet/{id}','StudentsController@marksheet');
+    //Test
+    Route::get('/students/certificates/{id}','StudentsController@certificates'); 
+    //Test   
     Route::get('/students/medical/{id}','StudentsController@medical');
 	Route::post('/students/medical','StudentsController@saveMedical');
 	Route::get('/students/attendance/{id}','StudentsController@attendance');

@@ -283,12 +283,12 @@ class TeachersController extends \BaseController {
 	}
 
 	public function create(){
-		if(User::where('username',trim(Input::get('username')))->count() > 0){
-			return $this->panelInit->apiOutput(false,$this->panelInit->language['addTeacher'],$this->panelInit->language['usernameUsed']);
-		}
-		if(User::where('email',Input::get('email'))->count() > 0){
-			return $this->panelInit->apiOutput(false,$this->panelInit->language['addTeacher'],$this->panelInit->language['mailUsed']);
-		}
+		// if(User::where('username',trim(Input::get('username')))->count() > 0){
+		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['addTeacher'],$this->panelInit->language['usernameUsed']);
+		// }
+		// if(User::where('email',Input::get('email'))->count() > 0){
+		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['addTeacher'],$this->panelInit->language['mailUsed']);
+		// }
 		$User = new User();
 		$User->username = Input::get('username');
 		$User->email = Input::get('email');
@@ -325,12 +325,12 @@ class TeachersController extends \BaseController {
 	}
 
 	function edit($id){
-		if(User::where('username',trim(Input::get('username')))->where('id','<>',$id)->count() > 0){
-			return $this->panelInit->apiOutput(false,$this->panelInit->language['EditTeacher'],$this->panelInit->language['usernameUsed']);
-		}
-		if(User::where('email',Input::get('email'))->where('id','!=',$id)->count() > 0){
-			return $this->panelInit->apiOutput(false,$this->panelInit->language['EditTeacher'],$this->panelInit->language['mailUsed']);
-		}
+		// if(User::where('username',trim(Input::get('username')))->where('id','<>',$id)->count() > 0){
+		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['EditTeacher'],$this->panelInit->language['usernameUsed']);
+		// }
+		// if(User::where('email',Input::get('email'))->where('id','!=',$id)->count() > 0){
+		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['EditTeacher'],$this->panelInit->language['mailUsed']);
+		// }
 		$User = User::find($id);
 		$User->username = Input::get('username');
 		$User->email = Input::get('email');

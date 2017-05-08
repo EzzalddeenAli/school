@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{URL::asset('assets/dist/css/skins/_all-skins.min.css')}}">
     <link rel="stylesheet" href="{{URL::asset('assets/css/intlTelInput.css')}}">
     <link href="{{URL::asset('assets/css/schoex.css')}}" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
     <?php if($panelInit->isRTL == 1){ ?>
         <link href="{{URL::asset('assets/css/rtl.css')}}" rel="stylesheet" type="text/css" />
     <?php } ?>
