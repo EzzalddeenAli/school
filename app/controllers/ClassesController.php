@@ -97,12 +97,12 @@ class ClassesController extends \BaseController {
 		}
 		$classes->save();
 
-		// $classes->classTeacher = "";
-		// $teachersList = User::whereIn('id',Input::get('classTeacher'))->get();
-		// foreach ($teachersList as $teacher) {
-		// 	$classes->classTeacher .= $teacher->fullName.", ";
-		// }
-		// $classes->classSubjects = json_decode($classes->classSubjects);
+		$classes->classTeacher = "";
+		$teachersList = User::whereIn('id',Input::get('classTeacher'))->get();
+		foreach ($teachersList as $teacher) {
+			$classes->classTeacher .= $teacher->fullName.", ";
+		}
+		$classes->classSubjects = json_decode($classes->classSubjects);
 
 		return $this->panelInit->apiOutput(true,$this->panelInit->language['addClass'],$this->panelInit->language['classCreated'],$classes->toArray() );
 	}
@@ -126,12 +126,12 @@ class ClassesController extends \BaseController {
 		}
 		$classes->save();
 
-		// $classes->classTeacher = "";
-		// $teachersList = User::whereIn('id',Input::get('classTeacher'))->get();
-		// foreach ($teachersList as $teacher) {
-		// 	$classes->classTeacher .= $teacher->fullName.", ";
-		// }
-		// $classes->classSubjects = json_decode($classes->classSubjects);
+		$classes->classTeacher = "";
+		$teachersList = User::whereIn('id',Input::get('classTeacher'))->get();
+		foreach ($teachersList as $teacher) {
+			$classes->classTeacher .= $teacher->fullName.", ";
+		}
+		$classes->classSubjects = json_decode($classes->classSubjects);
 
 		return $this->panelInit->apiOutput(true,$this->panelInit->language['editClass'],$this->panelInit->language['classUpdated'],$classes->toArray() );
 	}
