@@ -587,9 +587,9 @@ class StudentsController extends \BaseController {
 
 	public function create(){
 		if($this->data['users']->role != "admin") exit;
-		// if(User::where('username',trim(Input::get('username')))->count() > 0){
-		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['addStudent'],$this->panelInit->language['usernameUsed']);
-		// }
+		if(User::where('username',trim(Input::get('username')))->count() > 0){
+			return $this->panelInit->apiOutput(false,$this->panelInit->language['addStudent'],$this->panelInit->language['usernameUsed']);
+		}
 		if(isset($this->panelInit->settingsArray['emailIsMandatory']) AND $this->panelInit->settingsArray['emailIsMandatory'] == 1){
 			if(User::where('email',Input::get('email'))->count() > 0){
 				return $this->panelInit->apiOutput(false,$this->panelInit->language['addStudent'],$this->panelInit->language['mailUsed']);
@@ -691,9 +691,9 @@ class StudentsController extends \BaseController {
 
 	function edit($id){
 		if($this->data['users']->role != "admin") exit;
-		// if(User::where('username',trim(Input::get('username')))->where('id','!=',$id)->count() > 0){
-		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['editStudent'],$this->panelInit->language['usernameUsed']);
-		// }
+		if(User::where('username',trim(Input::get('username')))->where('id','!=',$id)->count() > 0){
+			return $this->panelInit->apiOutput(false,$this->panelInit->language['editStudent'],$this->panelInit->language['usernameUsed']);
+		}
 		if(isset($this->panelInit->settingsArray['emailIsMandatory']) AND $this->panelInit->settingsArray['emailIsMandatory'] == 1){
 			if(User::where('email',Input::get('email'))->where('id','!=',$id)->count() > 0){
 				return $this->panelInit->apiOutput(false,$this->panelInit->language['addStudent'],$this->panelInit->language['mailUsed']);
@@ -1177,166 +1177,7 @@ class StudentsController extends \BaseController {
 		}
 		return $toReturn;
 	}
-// Test	
-	function certificates($id){
-		if($this->data['users']->role != "admin") exit;
-		// if(User::where('username',trim(Input::get('username')))->where('id','!=',$id)->count() > 0){
-		// 	return $this->panelInit->apiOutput(false,$this->panelInit->language['editStudent'],$this->panelInit->language['usernameUsed']);
-		// }
-		if(isset($this->panelInit->settingsArray['emailIsMandatory']) AND $this->panelInit->settingsArray['emailIsMandatory'] == 1){
-			if(User::where('email',Input::get('email'))->where('id','!=',$id)->count() > 0){
-				return $this->panelInit->apiOutput(false,$this->panelInit->language['addStudent'],$this->panelInit->language['mailUsed']);
-			}
-		}
-		$User = User::find($id);
-		$User->email = Input::get('email');
-		$User->username = Input::get('username');
-		$User->fullName = Input::get('fullName');
-		if(Input::get('password') != ""){
-			$User->password = Hash::make(Input::get('password'));
-		}
-		$User->studentRollId = Input::get('studentRollId');
-		$User->gender = Input::get('gender');
-		$User->address = Input::get('address');
-		$User->phoneNo = Input::get('phoneNo');
-		$User->mobileNo = Input::get('mobileNo');
-		$User->transport = Input::get('transport');
-		if(input::has('hostel')){
-			$User->hostel = Input::get('hostel');
-		}
-		if(Input::get('birthday') != ""){
-			$User->birthday = $this->panelInit->dateToUnix(Input::get('birthday'));
-		}
 
-		if (Input::hasFile('photo')) {
-			$fileInstance = Input::file('photo');
-			$newFileName = "profile_".$User->id.".jpg";
-			$file = $fileInstance->move('uploads/profile/',$newFileName);
-
-			$User->photo = "profile_".$User->id.".jpg";
-		}
-		$User->save();
-
-		if(input::has('academicYear')){
-			$studentAcademicYears = input::get('academicYear');
-			if(input::has('userSection')){
-				$studentSection = input::get('userSection');
-			}
-			$academicYear = student_academic_years::where('studentId',$id)->get();
-			foreach ($academicYear as $value) {
-				if(isset($studentAcademicYears[$value->academicYearId])){
-					$studentAcademicYearsUpdate = student_academic_years::where('studentId',$User->id)->where('academicYearId',$value->academicYearId)->first();
-					$studentAcademicYearsUpdate->classId = $studentAcademicYears[$value->academicYearId];
-					if($this->panelInit->settingsArray['enableSections'] == true){
-						$studentAcademicYearsUpdate->sectionId = $studentSection[$value->academicYearId];
-					}
-					$studentAcademicYearsUpdate->save();
-
-					attendance::where('classId',$value->classId)->where('studentId',$User->id)->update(array('classId' => $studentAcademicYears[$value->academicYearId]));
-					exam_marks::where('classId',$value->classId)->where('studentId',$User->id)->update(array('classId' => $studentAcademicYears[$value->academicYearId]));
-				}
-				if($value->academicYearId == $User->studentAcademicYear){
-					$User->studentClass = $studentAcademicYears[$value->academicYearId];
-					if($this->panelInit->settingsArray['enableSections'] == true){
-						$User->studentSection = $studentSection[$value->academicYearId];
-					}
-					$User->save();
-				}
-			}
-		}
-
-		return $this->panelInit->apiOutput(true,$this->panelInit->language['editStudent'],$this->panelInit->language['studentModified'],$User->toArray());
-	}
-
-function certificatePDF($User){
-		if(\Auth::user()->role == "student"){
-			$User = \Auth::user()->id;
-		}
-		$student = User::where('id',$User)->first();
-		
-		
-		$doc_details = array(
-							"title" => $student->fullName ." Marksheet",
-							"author" => $this->data['panelInit']->settingsArray['siteTitle'],
-							"topMarginValue" => 10
-							);
-
-		$pdfbuilder = new PdfBuilder($doc_details);
-
-	//	$pdfbuilder->space(10);
-
-		$content = "
-		<table cellspacing=\"0\" cellpadding=\"4\" border=\"0\">
-			<tr>
-				<td width=\"100px\"><img src=\"".URL::asset('assets/img/logo.png')."\"></td>
-				<td style=\"vertical-align: middle\" ><br/><br/><br/>".$this->data['panelInit']->settingsArray['siteTitle']."<br/>".$student->fullName ." Certificate"."</td>
-			</tr>
-		</table>
-
-		<br/><br/>
-
-		<table cellspacing=\"5\" cellpadding=\"4\" border=\"0\">
-		        <tr>
-		            <td style='width: 50%;text-align: left;'>
-
-						<table cellspacing=\"5\" cellpadding=\"4\" border=\"0\">
-					        <tr>
-					            <td style=\"width:30%; \">School</td>
-					            <td style=\"width:70%; \">".$this->data['panelInit']->settingsArray['siteTitle']."</td>
-					        </tr>
-					        <tr>
-					            <td style=\"width:30%; \">".$this->panelInit->language['Marksheet']." :</td>
-					            <td style=\"width:70%\">".$this->data['panelInit']->settingsArray['address']."<br>".$this->data['panelInit']->settingsArray['address2']."
-					            </td>
-					        </tr>
-					        <tr>
-					            <td style=\"width:30%;\">".$this->panelInit->language['email']." :</td>
-					            <td style=\"width:70%\">".$this->data['panelInit']->settingsArray['systemEmail']."</td>
-					        </tr>
-					        <tr>
-					            <td style=\"width:30%;\">".$this->panelInit->language['phoneNo']." :</td>
-					            <td style=\"width:70%\">".$this->data['panelInit']->settingsArray['phoneNo']."</td>
-					        </tr>
-					    </table>
-
-		            </td>
-		            <td style='width: 50%; color: #444444;text-align: left;'>
-
-
-						<table cellspacing=\"5\" cellpadding=\"4\" border=\"0\">
-							<tr>
-								<td style=\"width:30%;\">".$this->panelInit->language['student']." :</td>
-								<td style=\"width:70%\">".$student->fullName."</td>
-							</tr>
-							<tr>
-								<td style=\"width:30%;\">".$this->panelInit->language['Address']." :</td>
-								<td style=\"width:70%\">".$student->address."</td>
-							</tr>
-							<tr>
-								<td style=\"width:30%;\">".$this->panelInit->language['email']." :</td>
-								<td style=\"width:70%\">".$student->email."</td>
-							</tr>
-							<tr>
-								<td style=\"width:30%;\">".$this->panelInit->language['phoneNo']." :</td>
-								<td style=\"width:70%\">".$student->phoneNo." - ".$student->mobileNo."</td>
-							</tr>
-						</table>
-
-
-					</td>
-		        </tr>
-		    </table>
-
-			<br/><br/><br/>";
-
-
-
-		$pdfbuilder->table($content, array('border' => '0','align'=>'') );
-		$pdfbuilder->output('Certificate - '.$student->fullName.'.pdf');
-
-		exit;
-	}	
-//Test	
 	function profile($id){
 		$data = User::where('role','student')->where('id',$id);
 
