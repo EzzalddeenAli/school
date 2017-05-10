@@ -61,7 +61,7 @@
                   <td>
                       <img alt="{{student.fullName}}" class="user-image img-circle" style="width:35px; height:35px;" ng-src="{{'dashboard/profileImage/'+student.id}}">
                       <a href="" ng-click="studentProfile( student.id )">{{student.fullName}}</a>
-                      <span ng-if="student.isLeaderBoard != ''"><br/><i class="fa fa-trophy"></i> {{phrase.leaderboard}} <a ng-click="removeLeaderBoard(student.id,$index)"><i class="fa fa-trash-o"></i></a></span>
+                      <!-- <span ng-if="student.isLeaderBoard != ''"><br/><i class="fa fa-trophy"></i> {{phrase.leaderboard}} <a ng-click="removeLeaderBoard(student.id,$index)"><i class="fa fa-trash-o"></i></a></span> -->
                   </td>
                   <!-- <td>{{student.username}}</td> -->
                   <td>{{student.mobileNo}}</td>
@@ -762,40 +762,40 @@
     <div class="box-body table-responsive">
       <form class="form-horizontal" ng-submit="reviewImportData()" name="importData" role="form" novalidate>
 
-            <h4>{{phrase.failedImport}}</h4>
+            <h4>{{phrase.readyImport}}</h4>
             <div class="box-body table-responsive">
                     <table class="table table-hover">
                     <tbody><tr>
                         <th>{{phrase.FullName}}</th>
-                        <th>{{phrase.username}}</th>
-                        <th>{{phrase.email}}</th>
+                        <!-- <th>{{phrase.username}}</th> -->
+                        <th>{{phrase.mobileNo}}</th>
                         <th>{{phrase.class}}</th>
-                        <th ng-show="$root.dashboardData.enableSections == '1'">{{phrase.sections}}</th>
-                        <th>{{phrase.password}}</th>
+                        <th>{{phrase.sections}}</th>
+                        <!-- <th>{{phrase.password}}</th> -->
                         <td> </td>
                     </tr>
                     <tr ng-repeat="student in importReview.revise">
                         <td>{{student.fullName}}</td>
-                        <td ng-class="{'has-error': student.error.indexOf('username',0) != -1}"><input type="text" name="username" class="form-control mobilenumber" ng-model="student.username"></td>
-                        <td ng-class="{'has-error': student.error.indexOf('email',0) != -1}"><input type="text" name="email" class="form-control mobilenumber" ng-model="student.email"></td>
-                        <td ng-class="{'has-error': student.error.indexOf('class',0) != -1}">
+                        <!-- <td><input type="text" name="username" class="form-control mobilenumber" ng-model="student.username"></td> -->
+                        <td><input type="text" name="email" class="form-control mobilenumber" ng-model="student.mobileNo"></td>
+                        <td>
                             <select class="form-control" name="studentClass" ng-model="student.studentClass" required>
                               <option ng-repeat="class in classes" value="{{class.id}}" ng-selected="student.studentClass == class.id">{{class.className}}</option>
                             </select>
                         </td>
-                        <td ng-class="{'has-error': student.error.indexOf('class',0) != -1}" ng-show="$root.dashboardData.enableSections == '1'">
+                        <td ng-show="$root.dashboardData.enableSections == '1'">
                             <select class="form-control" name="studentSection" ng-model="student.studentSection" required>
                               <option ng-repeat="(key,value) in importSections[student.studentClass]" value="{{key}}" ng-selected="student.studentSection == key">{{value}}</option>
                             </select>
                         </td>
-                        <td><input type="password" name="password" class="form-control mobilenumber" ng-model="student.password"></td>
+                        <!-- <td><input type="password" name="password" class="form-control mobilenumber" ng-model="student.password"></td> -->
                         <td><a ng-click="removeImport(student,$index,'revise')" type="button" class="btn btn-danger btn-flat" title="{{phrase.Remove}}" tooltip><i class="fa fa-trash-o"></i></a></td>
                     </tr>
                     <tr ng-show="!importReview.revise.length"><td class="noTableData" colspan="6">{{phrase.noStudents}}</td></tr>
                 </tbody></table>
             </div>
 
-            <h4>{{phrase.readyImport}}</h4>
+            <!-- <h4>{{phrase.readyImport}}</h4>
             <div class="box-body table-responsive">
                     <table class="table table-hover">
                     <tbody><tr>
@@ -820,7 +820,7 @@
                     </tr>
                     <tr ng-show="!importReview.ready.length"><td class="noTableData" colspan="6">{{phrase.noStudents}}</td></tr>
                 </tbody></table>
-            </div>
+            </div> -->
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">

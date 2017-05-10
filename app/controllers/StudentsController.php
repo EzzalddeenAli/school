@@ -496,19 +496,19 @@ class StudentsController extends \BaseController {
 					$checkUser = User::where('username',$row['username'])->orWhere('email',$row['email']);
 				}else{
 					$checkUser = User::where('username',$row['username']);
-					if(isset($row['email']) AND $row['email'] != ""){
-						$checkUser = $checkUser->orWhere('email',$row['email']);
-					}
+					// if(isset($row['email']) AND $row['email'] != ""){
+					// 	$checkUser = $checkUser->orWhere('email',$row['email']);
+					// }
 				}
-				if($checkUser->count() > 0){
-					$checkUser = $checkUser->first();
-					if($checkUser->username == $row['username']){
-						$row['error'][] = "username";
-					}
-					if($checkUser->email == $row['email']){
-						$row['error'][] = "email";
-					}
-				}
+				// if($checkUser->count() > 0){
+				// 	$checkUser = $checkUser->first();
+				// 	if($checkUser->username == $row['username']){
+				// 		$row['error'][] = "username";
+				// 	}
+				// 	if($checkUser->email == $row['email']){
+				// 		$row['error'][] = "email";
+				// 	}
+				// }
 
 				if($row['studentClass'] == "" OR !isset($classArray[$row['studentClass']])){
 					$row['error'][] = "class";
@@ -526,12 +526,12 @@ class StudentsController extends \BaseController {
 			}else{
 				while (list(, $value) = each($dataImport['ready'])) {
 					$User = new User();
-					if(isset($value['email'])){
-						$User->email = $value['email'];
-					}
-					if(isset($value['username'])){
-						$User->username = $value['username'];
-					}
+					// if(isset($value['email'])){
+					// 	$User->email = $value['email'];
+					// }
+					// if(isset($value['username'])){
+					// 	$User->username = $value['username'];
+					// }
 					if(isset($value['fullName'])){
 						$User->fullName = $value['fullName'];
 					}
@@ -618,7 +618,7 @@ class StudentsController extends \BaseController {
 		if(Input::get('birthday') != ""){
 			$User->birthday = $this->panelInit->dateToUnix(Input::get('birthday'));
 		}
-		$User->isLeaderBoard = "";
+		// $User->isLeaderBoard = "";
 		$User->save();
 
 		if (Input::hasFile('photo')) {
@@ -666,28 +666,28 @@ class StudentsController extends \BaseController {
 		return $data;
 	}
 
-	function leaderboard($id){
-		if($this->data['users']->role != "admin") exit;
+	// function leaderboard($id){
+	// 	if($this->data['users']->role != "admin") exit;
 
-		$user = User::where('id',$id)->first();
-		$user->isLeaderBoard = Input::get('isLeaderBoard');
-		$user->save();
+	// 	$user = User::where('id',$id)->first();
+	// 	$user->isLeaderBoard = Input::get('isLeaderBoard');
+	// 	$user->save();
 
-		$this->panelInit->mobNotifyUser('users',$user->id,$this->panelInit->language['notifyIsLedaerBoard']);
+	// 	$this->panelInit->mobNotifyUser('users',$user->id,$this->panelInit->language['notifyIsLedaerBoard']);
 
-		return $this->panelInit->apiOutput(true,$this->panelInit->language['stdLeaderBoard'],$this->panelInit->language['stdNowLeaderBoard']);
-	}
+	// 	return $this->panelInit->apiOutput(true,$this->panelInit->language['stdLeaderBoard'],$this->panelInit->language['stdNowLeaderBoard']);
+	// }
 
-	function leaderboardRemove($id){
-		if($this->data['users']->role != "admin") exit;
-		if ( $postDelete = User::where('role','student')->where('id', $id)->where('isLeaderBoard','!=','')->first() )
-        {
-            User::where('role','student')->where('id', $id)->update(array('isLeaderBoard' => ''));
-            return $this->panelInit->apiOutput(true,$this->panelInit->language['stdLeaderBoard'],$this->panelInit->language['stdLeaderRem']);
-        }else{
-            return $this->panelInit->apiOutput(false,$this->panelInit->language['stdLeaderBoard'],$this->panelInit->language['stdNotLeader']);
-        }
-	}
+	// function leaderboardRemove($id){
+	// 	if($this->data['users']->role != "admin") exit;
+	// 	if ( $postDelete = User::where('role','student')->where('id', $id)->where('isLeaderBoard','!=','')->first() )
+ //        {
+ //            User::where('role','student')->where('id', $id)->update(array('isLeaderBoard' => ''));
+ //            return $this->panelInit->apiOutput(true,$this->panelInit->language['stdLeaderBoard'],$this->panelInit->language['stdLeaderRem']);
+ //        }else{
+ //            return $this->panelInit->apiOutput(false,$this->panelInit->language['stdLeaderBoard'],$this->panelInit->language['stdNotLeader']);
+ //        }
+	// }
 
 	function edit($id){
 		if($this->data['users']->role != "admin") exit;
