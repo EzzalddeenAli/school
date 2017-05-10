@@ -1,4 +1,5 @@
 .DS_Store
-app/config/database.php
+app/config/*
 app/storage/views/*
 uploads/**/*
+app/config/database.php

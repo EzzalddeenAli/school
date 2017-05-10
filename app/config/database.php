@@ -49,8 +49,9 @@ return array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
 			'database'  => 'school',
-			'username'  => 'root',
-			'password'  => 'root',
+			'port'		=>	'3322'
+,			'username'  => 'root',
+			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
