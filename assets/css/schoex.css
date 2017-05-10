@@ -278,7 +278,45 @@ a{
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF);
 }
 
+/*My New CSS*/
+.floating_header_div
+{
+    height: 40px;
+}
+.floating_button_fixed
+{
+    position: fixed;
+}
+.floating_button_right
+{
+    right: 40px;
+}
+.floating_header_contain
+{
+    position: fixed;
+    height: 40px;
+    width: calc(100% - 448px);
+    background-color: white;
+    z-index: 1000;
+}
+.floating_top
+{
+    top: 0px;
+}
+.floating_button
+{
 
+}
+.floating_button_cancel
+{
+
+}
+.floating_header_container_off
+{
+    background-color: #f1f1f1;
+    height: 60px;
+    padding: 10px 10px;
+}
 /*!
  * Datepicker for Bootstrap v1.6.1 (https://github.com/eternicode/bootstrap-datepicker)
  *
