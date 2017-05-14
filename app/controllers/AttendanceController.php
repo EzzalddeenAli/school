@@ -123,8 +123,10 @@ class AttendanceController extends \BaseController {
 					$attendanceN->save();
 
 					if($value['attendance'] != "1" AND $this->panelInit->settingsArray['absentNotif'] != "0"){
-						$parents = User::where('parentOf','like','%"'.$key.'"%')->orWhere('parentOf','like','%:'.$key.'}%')->get();
-						$student = User::where('id',$key)->first();
+						// $parents = User::where('parentOf','like','%"'.$key.'"%')->orWhere('parentOf','like','%:'.$key.'}%')->get();
+						$students = User::where('id',$key)->get();
+						// $student = User::where('id',$key)->first();
+						$student = User::where('id',$key)->first();						
 
 						$absentStatus = "";
 						switch ($value['attendance']) {
@@ -145,7 +147,7 @@ class AttendanceController extends \BaseController {
 								break;
 						}
 						$MailSmsHandler = new MailSmsHandler();
-						foreach ($parents as $parent) {
+						foreach ($students as $studentr) {
 							if(isset($mail)){
 								$studentTemplate = $mailTemplate->templateMail;
 								$examGradesTable = "";
@@ -154,15 +156,24 @@ class AttendanceController extends \BaseController {
 								$studentTemplate = str_replace($searchArray, $replaceArray, $studentTemplate);
 								$MailSmsHandler->mail($parent->email,$this->panelInit->language['absentReport'],$studentTemplate);
 							}
-							if(isset($sms) AND $parent->mobileNo != ""){
+							// if(isset($sms) AND $parent->mobileNo != ""){
+							// 	$studentTemplate = $mailTemplate->templateSMS;
+							// 	$examGradesTable = "";
+							// 	$searchArray = array("{studentName}","{studentRoll}","{studentEmail}","{studentUsername}","{parentName}","{parentEmail}","{absentDate}","{absentStatus}","{schoolTitle}");
+							// 	$replaceArray = array($student->fullName,$student->studentRollId,$student->email,$student->username,$parent->fullName,$parent->email,Input::get('attendanceDay'),$absentStatus,$this->panelInit->settingsArray['siteTitle']);
+							// 	$studentTemplate = str_replace($searchArray, $replaceArray, $studentTemplate);
+							// 	$MailSmsHandler->sms($parent->mobileNo,$studentTemplate);
+							// }
+							// $this->panelInit->mobNotifyUser('users',$parent->id,$this->panelInit->language['student'] . " " . $student->fullName . ":" . $absentStatus . " " . Input::get('attendanceDay'));
+							if(isset($sms)){
 								$studentTemplate = $mailTemplate->templateSMS;
 								$examGradesTable = "";
-								$searchArray = array("{studentName}","{studentRoll}","{studentEmail}","{studentUsername}","{parentName}","{parentEmail}","{absentDate}","{absentStatus}","{schoolTitle}");
-								$replaceArray = array($student->fullName,$student->studentRollId,$student->email,$student->username,$parent->fullName,$parent->email,Input::get('attendanceDay'),$absentStatus,$this->panelInit->settingsArray['siteTitle']);
+								$searchArray = array("{studentName}","{studentRoll}","{studentEmail}","{studentUsername}","{absentDate}","{absentStatus}","{schoolTitle}");
+								$replaceArray = array($student->fullName,$student->studentRollId,$student->email,$student->username,Input::get('attendanceDay'),$absentStatus,$this->panelInit->settingsArray['siteTitle']);
 								$studentTemplate = str_replace($searchArray, $replaceArray, $studentTemplate);
-								$MailSmsHandler->sms($parent->mobileNo,$studentTemplate);
+								$MailSmsHandler->sms($studentr->mobileNo,$studentTemplate);
 							}
-							$this->panelInit->mobNotifyUser('users',$parent->id,$this->panelInit->language['student'] . " " . $student->fullName . ":" . $absentStatus . " " . Input::get('attendanceDay'));
+							$this->panelInit->mobNotifyUser('users',$studentr->id,$this->panelInit->language['student'] . " " . $student->fullName . ":" . $absentStatus . " " . Input::get('attendanceDay'));
 						}
 					}
 
@@ -177,7 +188,9 @@ class AttendanceController extends \BaseController {
 
 						if($value['attendance'] != "1" AND $this->panelInit->settingsArray['absentNotif'] != "0"){
 							$parents = User::where('parentOf','like','%"'.$key.'"%')->orWhere('parentOf','like','%:'.$key.'}%')->get();
-							$student = User::where('id',$key)->first();
+							// $student = User::where('id',$key)->first();
+							$student = User::where('id',$key)->first();	
+							$students = User::where('id',$key)->get();						
 
 							$absentStatus = "";
 							switch ($value['attendance']) {
@@ -199,24 +212,24 @@ class AttendanceController extends \BaseController {
 							}
 
 							$MailSmsHandler = new MailSmsHandler();
-							foreach ($parents as $parent) {
+							foreach ($students as $studentr) {
 								if(isset($mail)){
 									$studentTemplate = $mailTemplate->templateMail;
 									$examGradesTable = "";
-									$searchArray = array("{studentName}","{studentRoll}","{studentEmail}","{studentUsername}","{parentName}","{parentEmail}","{absentDate}","{absentStatus}","{schoolTitle}");
-									$replaceArray = array($student->fullName,$student->studentRollId,$student->email,$student->username,$parent->fullName,$parent->email,Input::get('attendanceDay'),$absentStatus,$this->panelInit->settingsArray['siteTitle']);
+									$searchArray = array("{studentName}","{studentRoll}","{studentEmail}","{studentUsername}","{absentDate}","{absentStatus}","{schoolTitle}");
+									$replaceArray = array($student->fullName,$student->studentRollId,$student->email,$student->username,Input::get('attendanceDay'),$absentStatus,$this->panelInit->settingsArray['siteTitle']);
 									$studentTemplate = str_replace($searchArray, $replaceArray, $studentTemplate);
 									$MailSmsHandler->mail($parent->email,$this->panelInit->language['absentReport'],$studentTemplate);
 								}
-								if(isset($sms) AND $parent->mobileNo != ""){
+								if(isset($sms)){
 									$studentTemplate = $mailTemplate->templateSMS;
 									$examGradesTable = "";
-									$searchArray = array("{studentName}","{studentRoll}","{studentEmail}","{studentUsername}","{parentName}","{parentEmail}","{absentDate}","{absentStatus}","{schoolTitle}");
-									$replaceArray = array($student->fullName,$student->studentRollId,$student->email,$student->username,$parent->fullName,$parent->email,Input::get('attendanceDay'),$absentStatus,$this->panelInit->settingsArray['siteTitle']);
+									$searchArray = array("{studentName}","{studentRoll}","{studentEmail}","{studentUsername}","{absentDate}","{absentStatus}","{schoolTitle}");
+									$replaceArray = array($student->fullName,$student->studentRollId,$student->email,$student->username,Input::get('attendanceDay'),$absentStatus,$this->panelInit->settingsArray['siteTitle']);
 									$studentTemplate = str_replace($searchArray, $replaceArray, $studentTemplate);
-									$MailSmsHandler->sms($parent->mobileNo,$studentTemplate);
+									$MailSmsHandler->sms($studentr->mobileNo,$studentTemplate);
 								}
-								$this->panelInit->mobNotifyUser('users',$parent->id,$this->panelInit->language['student'] . " " . $student->fullName . ":" . $absentStatus . " " . Input::get('attendanceDay'));
+								$this->panelInit->mobNotifyUser('users',$studentr->id,$this->panelInit->language['student'] . " " . $student->fullName . ":" . $absentStatus . " " . Input::get('attendanceDay'));
 							}
 						}
 					}

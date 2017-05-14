@@ -45,8 +45,7 @@
               <tbody><tr>
                   <th>{{phrase.ID}}</th>
                   <th>{{phrase.FullName}}</th>
-                  <th>{{phrase.username}}</th>
-                  <th>{{phrase.email}}</th>
+                  <th>{{phrase.mobileNo}}</th>
                   <th class="no-print">{{phrase.Operations}}</th>
               </tr>
               <tr dir-paginate="teacher in teachers | itemsPerPage:20" total-items="totalItems">
@@ -56,8 +55,7 @@
                       <a href="" ng-click="teacherProfile( teacher.id )">{{teacher.fullName}}</a>
                       <span ng-if="teacher.isLeaderBoard != ''"><br/><i class="fa fa-trophy"></i> {{phrase.leaderboard}} <a ng-click="removeLeaderBoard(teacher.id,$index)"><i class="fa fa-trash-o"></i></a></span>
                   </td>
-                  <td>{{teacher.username}}</td>
-                  <td>{{teacher.email}}</td>
+                  <td>{{teacher.mobileNo}}</td>
                   <td class="no-print">
                     <a ng-if="teacher.isLeaderBoard == ''" ng-click="leaderBoard(teacher.id,$index)" type="button" class="btn btn-info btn-flat" title="{{phrase.leaderboard}}" tooltip><i class="fa fa-trophy"></i></a>
                     <a ng-click="edit(teacher.id)" type="button" class="btn btn-info btn-flat" title="{{phrase.Edit}}" tooltip><i class="fa fa-pencil"></i></a>
@@ -110,21 +108,55 @@
       </div>
   </div>
 </section>
-
+<!-- Floating Scroll -->
+<script type="text/javascript">
+  $(document).ready(function(){
+  $(window).scroll(function(){
+    if($(this).scrollTop() > 150){
+      $('.floating_header_container_off').addClass('floating_top')
+      $('.floating_header_container_off').addClass('floating_header_contain')
+      $('.floating_button').addClass('floating_button_fixed')
+      $('.floating_button_cancel').addClass('floating_button_right')
+      $('.floating_button_cancel').removeClass('pull-right')       
+    }
+    else{$('.floating_header_container_off').removeClass("floating_top")
+         $('.floating_header_container_off').removeClass('floating_header_contain')      
+         $('.floating_button').removeClass('floating_button_fixed')
+         $('.floating_button_cancel').removeClass('floating_button_right')
+         $('.floating_header_container_off').removeClass('floating_header_container')
+         $('.floating_button_cancel').addClass('pull-right') }
+  });
+});
+</script>
+<!-- Floating Scroll -->
 <section class="content" ng-show="views.add">
-  <a ng-click="changeView('list')" class="floatRTL btn btn-danger btn-flat pull-right marginBottom15">{{phrase.cancelAdd}}</a>
   <div class="box col-xs-12">
     <div class="box-header">
         <h3 class="box-title">{{phrase.addTeacher}}</h3>
-    </div>
-    <div class="box-body table-responsive">
+    </div>   
       <form class="form-horizontal" ng-upload="saveAdd(content)" method="post" action="teachers" name="addAdmin" role="form" novalidate>
+        <div class="form-group floating_header_div">
+          <div class="col-sm-offset-2 col-sm-10">
+          <div class="floating_header_container_off">
+            <input type="hidden" name="_token" value="{{CSRF_TOKEN}}">
+            <button type="submit" class="btn btn-default floating_button" ng-disabled="addAdmin.$invalid || $isUploading">{{phrase.addTeacher}}</button>
+            <a ng-click="changeView('list')" class="floatRTL btn btn-danger btn-flat pull-right floating_button_cancel floating_button marginBottom15">{{phrase.cancelAdd}}</a>
+            <span></span>          
+          </div>  
+          </div>
+        </div>      
         <div class="form-group" ng-class="{'has-error': addAdmin.fullName.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.FullName}} * </label>
           <div class="col-sm-10">
             <input type="text" name="fullName" ng-model="form.fullName" class="form-control" required placeholder="{{phrase.FullName}}">
           </div>
         </div>
+        <div class="form-group" ng-class="{'has-error': addAdmin.mobileNo.$invalid}">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}} *</label>
+          <div class="col-sm-10">
+            <input type="text" mobile-number name="mobileNo" class="form-control" required ng-model="form.mobileNo" placeholder="Type with 91 {{phrase.mobileNo}}"> Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
+          </div>
+        </div>        
         <div class="form-group">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}}</label>
           <div class="col-sm-10">
@@ -180,12 +212,6 @@
             <input type="text" name="phoneNo" class="form-control" ng-model="form.phoneNo" placeholder="{{phrase.phoneNo}}">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.mobileNo.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}}</label>
-          <div class="col-sm-10">
-            <input type="text" mobile-number name="mobileNo" class="form-control" required ng-model="form.mobileNo" placeholder="Type with 91 {{phrase.mobileNo}}"> Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
-          </div>
-        </div>
         <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Transportation}}</label>
           <div class="col-sm-10">
@@ -200,31 +226,42 @@
             <input type="file" name="photo">
           </div>
         </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <input type="hidden" name="_token" value="{{CSRF_TOKEN}}">
-            <button type="submit" class="btn btn-default" ng-disabled="addAdmin.$invalid || $isUploading">{{phrase.addTeacher}}</button>
-          </div>
-        </div>
       </form>
     </div>
   </div>
 </section>
 
 <section class="content" ng-show="views.edit">
-  <a ng-click="changeView('list')" class="floatRTL btn btn-danger btn-flat pull-right marginBottom15">{{phrase.cancelEdit}}</a>
   <div class="box col-xs-12">
     <div class="box-header">
         <h3 class="box-title">{{phrase.EditTeacher}}</h3>
     </div>
     <div class="box-body table-responsive">
       <form class="form-horizontal" name="editAdmin" role="form" ng-upload="saveEdit(content)" method="post" action="{{'teachers/' + form.id}}" novalidate>
+        <div class="form-group floating_header_div">      
+          <div class="col-sm-offset-2 col-sm-10">
+          <div class="floating_header_container_off">
+            <input type="hidden" name="_token" value="{{CSRF_TOKEN}}">
+            <button type="submit" class="btn btn-default floating_button" ng-disabled="editAdmin.$invalid || $isUploading">{{phrase.EditTeacher}}</button>
+            <a ng-click="changeView('list')" class="floatRTL btn btn-danger btn-flat pull-right floating_button_cancel floating_button marginBottom15">{{phrase.cancelEdit}}</a>
+            <span></span>          
+          </div>  
+          </div>
+        </div>
+
         <div class="form-group" ng-class="{'has-error': editAdmin.fullName.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.FullName}} * </label>
           <div class="col-sm-10">
             <input type="text" name="fullName" ng-model="form.fullName" class="form-control" required placeholder="{{phrase.FullName}}">
           </div>
         </div>
+        <div class="form-group" ng-class="{'has-error': addAdmin.mobileNo.$invalid}">
+          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}}</label>
+          <div class="col-sm-10">
+            <input type="text" mobile-number name="mobileNo" class="form-control" ng-model="form.mobileNo" placeholder="{{phrase.mobileNo}}"> Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
+          </div>
+        </div>
+
 <!--         <div class="form-group" ng-class="{'has-error': editAdmin.username.$invalid}">
           <label for="inputEmail3" class="col-sm-2 control-label">{{phrase.username}} * </label>
           <div class="col-sm-10">
@@ -292,12 +329,6 @@
             <input type="text" name="phoneNo" class="form-control" ng-model="form.phoneNo" placeholder="{{phrase.phoneNo}}">
           </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': addAdmin.mobileNo.$invalid}">
-          <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.mobileNo}}</label>
-          <div class="col-sm-10">
-            <input type="text" mobile-number name="mobileNo" class="form-control" ng-model="form.mobileNo" placeholder="{{phrase.mobileNo}}"> Add<b> 91</b> before mobile number (Ex:<b> 91</b>9894123456)
-          </div>
-        </div>
         <div class="form-group">
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Transportation}}</label>
           <div class="col-sm-10">
@@ -310,12 +341,6 @@
           <label for="inputPassword3" class="col-sm-2 control-label">{{phrase.Photo}}</label>
           <div class="col-sm-10">
             <input type="file" name="photo">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <input type="hidden" name="_token" value="{{CSRF_TOKEN}}">
-            <button type="submit" class="btn btn-default" ng-disabled="editAdmin.$invalid || $isUploading">{{phrase.EditTeacher}}</button>
           </div>
         </div>
       </form>
