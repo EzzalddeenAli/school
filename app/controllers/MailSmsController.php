@@ -45,7 +45,6 @@ class MailSmsController extends \BaseController {
 		}else{
 			$mailsms->mailTo = Input::get('userType');
 		}
-
 		$mailsms->mailType = Input::get('sendForm');
 
 		$messageData = " ";
@@ -87,10 +86,11 @@ class MailSmsController extends \BaseController {
 			$usersList = array();
 			$selectedUsers = Input::get('selectedUsers');
 			foreach ($selectedUsers as $user) {
-				$usersList[] = $user['id'];
+				$usersList[] = $user['id'];				
 			}
 
 			$sedList = User::whereIn('id',$usersList)->get();
+
 		}
 
 		$SmsHandler = new MailSmsHandler();

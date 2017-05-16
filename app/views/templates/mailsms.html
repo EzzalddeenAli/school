@@ -1,3 +1,4 @@
+
  <section class="content-header">
     <h1>
         <i class="fa fa-send"></i> {{phrase.mailsms}}
@@ -156,6 +157,7 @@
           <tbody>
           <tr ng-repeat="userOne in searchResults">
               <td>{{userOne.name}} ({{userOne.role}})</td>
+              <td>{{userOne.class}}</td>
               <td>{{userOne.email}}</td>
               <td class="no-print">
                <a type="button" ng-click="linkStudentFinish(userOne)" class="btn btn-success btn-flat">{{phrase.select}}</a>

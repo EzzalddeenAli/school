@@ -253,6 +253,11 @@ class LoginController extends BaseController {
 	}
 
 	public function searchUsers($userType,$query){
+		$classArray = array();
+		$classes = classes::get();
+		foreach ($classes as $class) {
+			$classArray[$class->id] = $class->className;
+		}
 		$userType = explode(",",$userType);
 		$students = User::where('fullName','like','%'.$query.'%')->orWhere('username','like','%'.$query.'%')->orWhere('email','like','%'.$query.'%');
 		if(!in_array("all",$userType)){
@@ -261,7 +266,8 @@ class LoginController extends BaseController {
 		$students = $students->get();
 		$retArray = array();
 		foreach ($students as $student) {
-			$retArray[$student->id] = array("id"=>$student->id,"name"=>$student->fullName,"role"=>$student->role,"email"=>$student->email);
+			$retArray[$student->id] = array("id"=>$student->id,"name"=>$student->fullName,"role"=>$student->role,
+				"class"=>isset($classArray[$student->studentClass]) ? $classArray[$student->studentClass] : "",isset($sectionsArray[$student->studentSection]) ? $sectionsArray[$student->studentSection] : "","","email"=>$student->email);
 		}
 		return json_encode($retArray);
 	}
