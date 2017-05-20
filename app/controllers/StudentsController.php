@@ -191,7 +191,7 @@ class StudentsController extends \BaseController {
 				$students = User::where('role','student')->where('activated','1')->whereIn('id', $studentId);
 				if(isset($searchQ) AND $searchQ != "" AND $searchQ != "undefined"){
 					$students = $students->where(function($query) use ($searchQ){
-							                 $query->where('fullName','like','%'.$searchQ.'%')->orWhere('username','like','%'.$searchQ.'%')->orWhere('email','like','%'.$searchQ.'%');
+							                 $query->where('fullName','like','%'.$searchQ.'%')->orWhere('username','like','%'.$searchQ.'%')->orWhere('email','like','%'.$searchQ.'%')->orWhere('mobileNo','like','%'.$searchQ.'%');
 							             });
 				}
 				if(isset($searchC) AND $searchC != "" AND $searchC != "undefined" AND $searchC != 0){
@@ -214,7 +214,7 @@ class StudentsController extends \BaseController {
 				$students = User::where('role','student')->whereIn('studentClass',$classesList)->where('activated','1');
 				if(isset($searchQ) AND $searchQ != "" AND $searchQ != "undefined"){
 					$students = $students->where(function($query) use ($searchQ){
-							                 $query->where('fullName','like','%'.$searchQ.'%')->orWhere('username','like','%'.$searchQ.'%')->orWhere('email','like','%'.$searchQ.'%');
+							                 $query->where('fullName','like','%'.$searchQ.'%')->orWhere('username','like','%'.$searchQ.'%')->orWhere('email','like','%'.$searchQ.'%')->orWhere('mobileNo','like','%'.$searchQ.'%');
 							             });
 				}
 				if(isset($searchC) AND $searchC != "" AND $searchC != "undefined" AND $searchC != 0){
@@ -230,7 +230,7 @@ class StudentsController extends \BaseController {
 			$students = User::where('role','student')->where('activated','1');
 			if(isset($searchQ) AND $searchQ != "" AND $searchQ != "undefined"){
 				$students = $students->where(function($query) use ($searchQ){
-										 $query->where('fullName','like','%'.$searchQ.'%')->orWhere('username','like','%'.$searchQ.'%')->orWhere('email','like','%'.$searchQ.'%');
+										 $query->where('fullName','like','%'.$searchQ.'%')->orWhere('username','like','%'.$searchQ.'%')->orWhere('email','like','%'.$searchQ.'%')->orWhere('mobileNo','like','%'.$searchQ.'%');
 									 });
 			}
 			if(isset($searchC) AND $searchC != "" AND $searchC != "undefined" AND $searchC != 0){
@@ -257,7 +257,7 @@ class StudentsController extends \BaseController {
 
 		$toReturn['students'] = array();
 		while (list(, $student) = each($students)) {
-			$toReturn['students'][] = array('id'=>$student['id'],"studentRollId"=>$student['studentRollId'],"fullName"=>$student['fullName'],"username"=>$student['username'],"email"=>$student['email'],"isLeaderBoard"=>$student['isLeaderBoard'],"studentClass"=>isset($classArray[$student['studentClass']]) ? $classArray[$student['studentClass']] : "","studentSection"=>isset($sectionArray[$student['studentSection']]) ? $sectionArray[$student['studentSection']] : "");
+			$toReturn['students'][] = array('id'=>$student['id'],"studentRollId"=>$student['studentRollId'],"fullName"=>$student['fullName'],"username"=>$student['username'],"email"=>$student['email'],"mobileNo"=>$student['mobileNo'],"isLeaderBoard"=>$student['isLeaderBoard'],"studentClass"=>isset($classArray[$student['studentClass']]) ? $classArray[$student['studentClass']] : "","studentSection"=>isset($sectionArray[$student['studentSection']]) ? $sectionArray[$student['studentSection']] : "");
 		}
 
 		return $toReturn;
