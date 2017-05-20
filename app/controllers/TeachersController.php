@@ -42,12 +42,12 @@ class TeachersController extends \BaseController {
 	public function search($keyword,$page = 1){
 		$toReturn = array();
 		$toReturn['teachers'] = User::where('role','teacher')->where('activated','1')->where(function($query) use ($keyword){
-															$query->where('fullName','like','%'.$keyword.'%')->orWhere('username','like','%'.$keyword.'%')->orWhere('email','like','%'.$keyword.'%');
+															$query->where('fullName','like','%'.$keyword.'%')->orWhere('username','like','%'.$keyword.'%')->orWhere('email','like','%'.$keyword.'%')->orWhere('mobileNo','like','%'.$keyword.'%');
 													})->orderBy('id','DESC')->take('20')->skip(20* ($page - 1) )->get()->toArray();
 
 
 		$toReturn['totalItems'] = User::where('role','teacher')->where('activated','1')->where(function($query) use ($keyword){
-															$query->where('fullName','like','%'.$keyword.'%')->orWhere('username','like','%'.$keyword.'%')->orWhere('email','like','%'.$keyword.'%');
+															$query->where('fullName','like','%'.$keyword.'%')->orWhere('username','like','%'.$keyword.'%')->orWhere('email','like','%'.$keyword.'%')->orWhere('mobileNo','like','%'.$keyword.'%');
 													})->count();
 		return $toReturn;
 	}
